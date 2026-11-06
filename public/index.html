@@ -1,5 +1,180 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
 <title>Verse Docs</title>
-<style>body{font-family:system-ui,sans-serif;margin:0;display:grid;place-items:center;min-height:100vh;background:#f6f5f2;color:#1f2a44}main{text-align:center;padding:24px}h1{font-weight:600;margin:0 0 8px}p{margin:0;color:#5a6275}</style>
-</head><body><main><h1>Verse Docs</h1><p>Generación y firma de documentos de Verse Group.</p></main></body></html>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--panel:#fffdf8;--ink:#1d2433;--muted:#6b7080;--line:#e4dfd3;--brand:#1f2a44;--ok:#1f7a4d;--okbg:#e8f4ec;--bad:#b3261e;--badbg:#fbeceb;--warn:#8a5a00;--warnbg:#fdf3e1;--r:14px}
+@media (prefers-color-scheme:dark){:root{--bg:#14171f;--panel:#1c202b;--ink:#ecebe6;--muted:#9aa0ad;--line:#2c3140;--brand:#d9cfb8;--ok:#5fc48f;--okbg:#17291f;--bad:#f08a82;--badbg:#2d1a1a;--warn:#e6b555;--warnbg:#2b2416}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:32px 16px 64px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.logo{font-family:Fraunces,serif;font-size:24px;font-weight:600;letter-spacing:.2px;color:var(--brand)}
+.logo small{display:block;font:500 12px Inter,sans-serif;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.user{font-size:13px;color:var(--muted)}
+.user button{margin-left:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px}
+h2{font-family:Fraunces,serif;font-weight:500;font-size:20px;margin:0 0 6px}
+p.sub{margin:0 0 18px;color:var(--muted)}
+label{display:block;font-size:13px;font-weight:500;margin:14px 0 6px}
+input[type=text],input[type=password]{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--ink);font:inherit}
+button{font:600 14px Inter,sans-serif;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 16px;cursor:pointer}
+button.primary{background:var(--brand);color:var(--panel);border-color:var(--brand)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.drop{border:1.5px dashed var(--line);border-radius:var(--r);padding:36px 16px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s}
+.drop.on{border-color:var(--brand);color:var(--ink)}
+.drop strong{color:var(--ink)}
+.steps{display:flex;gap:8px;margin:0 0 18px;padding:0;list-style:none;flex-wrap:wrap}
+.steps li{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.steps li.act{color:var(--ink);border-color:var(--brand)}
+.steps li.done{color:var(--ok);border-color:var(--ok)}
+.banner{border-radius:12px;padding:14px 16px;margin-bottom:16px;font-weight:500}
+.banner.ok{background:var(--okbg);color:var(--ok)}
+.banner.bad{background:var(--badbg);color:var(--bad)}
+dl{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;margin:0 0 16px;font-size:14px}
+dt{color:var(--muted)}dd{margin:0;word-break:break-word}
+ul.h{margin:0 0 16px;padding:0;list-style:none}
+ul.h li{padding:10px 12px;border-radius:10px;margin-bottom:6px;font-size:14px}
+ul.h li.alta{background:var(--badbg)}ul.h li.media{background:var(--warnbg)}ul.h li.baja{background:transparent;border:1px solid var(--line)}
+ul.h b{font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-right:6px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted);font-size:13px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+.hide{display:none}
+@media(max-width:560px){dl{grid-template-columns:1fr}dt{margin-top:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Verse Docs<small>Revisión y firma de documentos</small></div>
+    <div class="user hide" id="user"><span id="uname"></span><button id="salir">Salir</button></div>
+  </header>
+
+  <section class="card hide" id="vLogin">
+    <h2>Ingresar</h2>
+    <p class="sub">Acceso del equipo de Verse Group.</p>
+    <form id="fLogin">
+      <label for="nombre">Tu nombre</label>
+      <input type="text" id="nombre" autocomplete="name" required>
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" autocomplete="current-password" required>
+      <div class="row" style="margin-top:18px"><button class="primary" type="submit">Entrar</button><span class="muted" id="lErr"></span></div>
+    </form>
+  </section>
+
+  <section class="hide" id="vApp">
+    <ul class="steps" id="steps"><li data-s="1">1. Subir</li><li data-s="2">2. Revisión IA</li><li data-s="3">3. Quién firma</li><li data-s="4">4. Envío por WhatsApp</li></ul>
+
+    <div class="card" id="cSubir">
+      <h2>Subir documento</h2>
+      <p class="sub">PDF del documento listo para firma. Se revisa contra el modelo aprobado antes de enviarlo.</p>
+      <div class="drop" id="drop"><strong>Arrastra el PDF aquí</strong><br>o haz clic para elegirlo · máximo 3 MB</div>
+      <input type="file" id="file" accept="application/pdf" class="hide">
+    </div>
+
+    <div class="card hide" id="cRev"></div>
+    <div class="card hide" id="cEnv"></div>
+  </section>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+let pdfB64 = null, revision = null, archivo = '';
+
+async function api(path, opts = {}) {
+  const r = await fetch(path, { credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, ...opts });
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 401 && path !== '/api/login') { mostrarLogin(); throw new Error('Sesión vencida'); }
+  return { ok: r.ok, status: r.status, d };
+}
+function paso(n) { document.querySelectorAll('#steps li').forEach((li) => { const s = +li.dataset.s; li.className = s < n ? 'done' : s === n ? 'act' : ''; }); }
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function mostrarLogin() { $('#vLogin').classList.remove('hide'); $('#vApp').classList.add('hide'); $('#user').classList.add('hide'); }
+function mostrarApp(nombre) { $('#vLogin').classList.add('hide'); $('#vApp').classList.remove('hide'); $('#user').classList.remove('hide'); $('#uname').textContent = nombre; paso(1); }
+
+$('#fLogin').onsubmit = async (e) => {
+  e.preventDefault(); $('#lErr').textContent = '';
+  const { ok, d } = await api('/api/login', { method: 'POST', body: JSON.stringify({ nombre: $('#nombre').value, password: $('#clave').value }) });
+  if (ok) { $('#clave').value = ''; mostrarApp(d.nombre); } else $('#lErr').textContent = d.error || 'No se pudo ingresar';
+};
+$('#salir').onclick = async () => { await fetch('/api/login', { method: 'DELETE' }); location.reload(); };
+
+const drop = $('#drop');
+drop.onclick = () => $('#file').click();
+drop.ondragover = (e) => { e.preventDefault(); drop.classList.add('on'); };
+drop.ondragleave = () => drop.classList.remove('on');
+drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove('on'); if (e.dataTransfer.files[0]) cargar(e.dataTransfer.files[0]); };
+$('#file').onchange = (e) => e.target.files[0] && cargar(e.target.files[0]);
+
+async function cargar(f) {
+  if (f.type !== 'application/pdf') return alert('Solo PDF');
+  if (f.size > 3.2 * 1024 * 1024) return alert('El PDF supera 3 MB');
+  archivo = f.name.replace(/\.pdf$/i, '');
+  const buf = new Uint8Array(await f.arrayBuffer());
+  let bin = ''; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+  pdfB64 = btoa(bin);
+  $('#cEnv').classList.add('hide');
+  const c = $('#cRev'); c.classList.remove('hide');
+  c.innerHTML = `<h2>Revisando ${esc(archivo)}</h2><p class="sub"><span class="spin"></span>La IA compara el documento con el modelo aprobado. Toma menos de un minuto.</p>`;
+  paso(2);
+  try {
+    const { ok, d } = await api('/api/revisar', { method: 'POST', body: JSON.stringify({ nombre: archivo, pdfBase64: pdfB64 }) });
+    if (!ok) throw new Error(d.error || 'Error en la revisión');
+    revision = d; pintarRevision(d);
+  } catch (err) { c.innerHTML = `<div class="banner bad">${esc(err.message)}</div>`; }
+}
+
+function pintarRevision(d) {
+  const c = $('#cRev');
+  const ok = d.resultado === 'ok';
+  const cp = d.contraparte || {};
+  const hall = (d.hallazgos || []).map((h) => `<li class="${esc(h.severidad)}"><b>${esc(h.severidad)}</b>${esc(h.descripcion)}${h.ubicacion ? ` <span class="muted">· ${esc(h.ubicacion)}</span>` : ''}</li>`).join('');
+  c.innerHTML = `
+    <div class="banner ${ok ? 'ok' : 'bad'}">${ok ? 'Revisión OK. No se encontró nada raro.' : 'Se encontró algo raro. El documento quedó bloqueado y se le avisó a Felipe por correo.'}</div>
+    <h2>${esc(archivo)}</h2>
+    <p class="sub">${esc(d.resumen || '')}</p>
+    <dl>
+      <dt>Tipo</dt><dd>${esc(d.tipo || '-')}</dd>
+      <dt>Firma por</dt><dd>${esc(d.empresa)}${d.firmaPor ? ` · ${esc(d.firmaPor)}` : ''}</dd>
+      <dt>Contraparte</dt><dd>${esc(cp.nombre || '-')} · ${esc(cp.tipo_documento || '')} ${esc(cp.numero_documento || '')}</dd>
+      <dt>Correo</dt><dd>${esc(cp.correo || '-')}</dd>
+      <dt>WhatsApp</dt><dd>${esc(cp.celular || '-')}</dd>
+    </dl>
+    ${hall ? `<h3 style="font-size:14px;margin:0 0 8px">Hallazgos</h3><ul class="h">${hall}</ul>` : ''}
+    ${ok ? `<div class="row"><button class="primary" id="bEnviar">Enviar a firma por WhatsApp</button><button id="bEnlaces">Solo generar enlaces</button><button id="bOtro">Subir otro</button></div>
+      <p class="muted" style="margin-top:12px">Firma primero la contraparte (documento, cara y código por WhatsApp) y luego ${esc(d.empresa)} desde ${esc(d.firmaPor)}.</p>`
+      : `<div class="row"><button id="bOtro">Subir el documento corregido</button></div>`}
+  `;
+  paso(ok ? 3 : 2);
+  $('#bOtro').onclick = () => { c.classList.add('hide'); $('#file').value = ''; paso(1); };
+  if (ok) { $('#bEnviar').onclick = () => enviar('whatsapp'); $('#bEnlaces').onclick = () => enviar('enlaces'); }
+}
+
+async function enviar(modo) {
+  if (!confirm(modo === 'whatsapp' ? '¿Enviar a firma? Auco notificará por WhatsApp y correo.' : '¿Crear el proceso sin notificar a nadie?')) return;
+  const c = $('#cEnv'); c.classList.remove('hide');
+  c.innerHTML = `<p class="sub"><span class="spin"></span>Creando el proceso de firma en Auco...</p>`;
+  document.querySelectorAll('#cRev button').forEach((b) => (b.disabled = true));
+  try {
+    const { ok, d } = await api('/api/enviar', { method: 'POST', body: JSON.stringify({ pdfBase64: pdfB64, token: revision.token, modo }) });
+    if (!ok) throw new Error(d.error || 'Error al enviar');
+    paso(5);
+    const f = (d.firmantes || []).map((x, i) => `<dt>${i + 1}. ${esc(x.rol)}</dt><dd>${esc(x.name)} · ${esc(x.email)}${x.phone ? ` · ${esc(x.phone)}` : ''}</dd>`).join('');
+    c.innerHTML = `<div class="banner ok">${esc(d.mensaje)}</div><h2>Proceso ${esc(d.code)}</h2><dl>${f}</dl><div class="row"><button id="bNuevo">Subir otro documento</button></div>`;
+    $('#bNuevo').onclick = () => location.reload();
+  } catch (err) {
+    c.innerHTML = `<div class="banner bad">${esc(err.message)}</div>`;
+    document.querySelectorAll('#cRev button').forEach((b) => (b.disabled = false));
+  }
+}
+
+api('/api/login').then(({ ok, d }) => (ok ? mostrarApp(d.nombre) : mostrarLogin())).catch(mostrarLogin);
+</script>
+</body>
+</html>

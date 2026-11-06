@@ -1,10 +1,10 @@
 // POST /api/auco/registrar-webhook — registra en Auco el webhook "default" apuntando a este servicio,
 // con el encabezado secreto. Correr una vez por ambiente (stage y prod). Requiere VERSE_API_TOKEN.
-const { json, autorizado, auco, secretoWebhook } = require('../../lib/util');
+const { json, quien, auco, secretoWebhook } = require('../../lib/util');
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return json(res, 405, { error: 'Usa POST' });
-  if (!autorizado(req)) return json(res, 401, { error: 'No autorizado' });
+  if ((quien(req) || {}).canal !== 'Claude') return json(res, 401, { error: 'No autorizado' });
   const host = process.env.PUBLIC_HOST || req.headers.host;
   const url = `https://${host}/api/auco/webhook`;
   try {

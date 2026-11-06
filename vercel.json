@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "api/revisar.js": { "maxDuration": 120 },
+    "api/enviar.js": { "maxDuration": 60 }
+  }
+}

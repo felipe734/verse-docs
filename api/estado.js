@@ -1,8 +1,8 @@
 // GET /api/estado?code=XXXX — estado del proceso en Auco (sin imágenes de identidad)
-const { json, autorizado, auco } = require('../lib/util');
+const { json, quien, auco } = require('../lib/util');
 
 module.exports = async (req, res) => {
-  if (!autorizado(req)) return json(res, 401, { error: 'No autorizado' });
+  if (!quien(req)) return json(res, 401, { error: 'No autorizado' });
   const code = new URL(req.url, 'http://x').searchParams.get('code');
   if (!code) return json(res, 400, { error: 'Falta code' });
   try {

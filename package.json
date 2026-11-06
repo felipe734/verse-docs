@@ -1,7 +1,8 @@
 {
   "name": "verse-docs",
   "private": true,
-  "version": "0.1.0",
-  "description": "Generación y firma de documentos de Verse Group (API de firma con Auco)",
-  "engines": { "node": "22.x" }
+  "version": "0.2.0",
+  "description": "Plataforma de documentos de Verse Group: revisión con IA y firma electrónica con Auco",
+  "engines": { "node": "22.x" },
+  "dependencies": { "pdf-lib": "1.17.1" }
 }
