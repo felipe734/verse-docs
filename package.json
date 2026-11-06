@@ -1,0 +1,7 @@
+{
+  "name": "verse-docs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Generación y firma de documentos de Verse Group (API de firma con Auco)",
+  "engines": { "node": "22.x" }
+}
