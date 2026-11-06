@@ -19,7 +19,7 @@ Plataforma de documentos de Verse Group en `https://docs.verseliving.com` (Verce
 | POST | `/api/enviar` | Sesión o Bearer, con token de revisión OK |
 | GET | `/api/estado?code=` | Sesión o Bearer |
 | POST | `/api/auco/webhook` | Encabezado `x-verse-webhook` derivado de `VERSE_API_TOKEN` |
-| POST | `/api/auco/registrar-webhook` | Solo Bearer. Una vez por ambiente. |
+| POST | `/api/auco/registrar-webhook` | Sesión o Bearer. Una vez por ambiente. |
 | GET | `/api/salud` | Público. Muestra qué variables están cargadas, sin valores. |
 
 ## Variables de entorno (Vercel, tipo Sensitive)
